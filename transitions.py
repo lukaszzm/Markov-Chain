@@ -32,3 +32,21 @@ def construct(users: int):
             transition_matrix[x, :] /= row_sum
 
     return transition_matrix
+
+
+def mixed_construct(users: int):
+    transition_matrix = np.zeros((users + 1, users + 1))
+
+    for x in range(users + 1):
+        row_sum = 0
+        for y in range(users + 1):
+            transition_matrix[x, y] = t_probability(users, x, y,
+                                                    p_log=0.2,
+                                                    p_stay_not_logged=0.8,
+                                                    p_logout=(1 - (0.008 * x + 0.1)),
+                                                    p_stay_logged=(0.008 * x + 0.1))
+            row_sum += transition_matrix[x, y]
+        if not np.isclose(row_sum, 1):
+            transition_matrix[x, :] /= row_sum
+
+    return transition_matrix
